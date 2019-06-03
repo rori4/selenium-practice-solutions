@@ -8,7 +8,8 @@ async function extractTable() {
     await driver.get(
       "https://rori4.github.io/selenium-practice/#/pages/tables/smart-table"
     );
-    for (let i = 0; i < 6; i++) {
+    let numberOfPages = 6;
+    for (let i = 0; i < numberOfPages; i++) {
       let rows = await driver.findElements(By.xpath("//tbody//tr"));
       for (const row of rows) {
         let rowData = await row.getText();
@@ -22,8 +23,9 @@ async function extractTable() {
           age: user[5]
         });
       }
-      let nextButton = await driver.findElement(By.css(".page-link-next"))
-      await driver.actions().click(nextButton).perform();
+      if (i !== numberOfPages - 1) {
+        await driver.findElement(By.css(".page-link-next")).click();
+      }
     }
     console.table(results);
   } catch (error) {
